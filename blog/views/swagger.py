@@ -25,6 +25,7 @@ class SwaggerSchemaView(APIView):
     def get(self, request):
         generator = SchemaGenerator(
             title="PS Blog",
+            description="Some endpoints require authetnication. Please authenticate in order to see all endpoints",
         )
         schema = generator.get_schema(request=request)
         return Response(schema)

@@ -28,8 +28,8 @@ class PostListCreateAPIView(ListCreateAPIView):
 
     # Posts can be searched or filtered by users
     filter_backends = DjangoFilterBackend, SearchFilter
-    search_fields = "body__icontains",
-    filter_fields = "author__id",
+    search_fields = "body",
+    filter_fields = "author",
 
     serializer_class = PostSerializer
     metadata_class = BlogMetadata

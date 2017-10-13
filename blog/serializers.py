@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
@@ -33,3 +34,19 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         read_only_fields = "author", "created_at", "updated_at",
         fields = "author", "created_at", "updated_at", "slug", "preview", "thumbnail", "tags"
+
+
+class UserTokenSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+
+    def validate(self, attrs):
+        username = attrs.get('username')
+        password = attrs.get('password')
+        user =  username and password and authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError('Unable to log in with provided credentials.', code='authorization')
+        return {
+            "user": user
+        }

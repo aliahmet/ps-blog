@@ -47,3 +47,4 @@ class CommentListCreateAPIView(ListCreateAPIView):
 class CommentRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     # We can use multiple permissions
     permission_classes = IsAuthenticatedOrReadOnly, CommentPermission,
+    serializer_class = CommentSerializer

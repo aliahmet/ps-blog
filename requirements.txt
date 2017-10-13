@@ -10,7 +10,6 @@ django-filter==1.0.4
 djangorestframework==3.6.3
 Markdown==2.6.8
 django-rest-swagger==2.1.2
-django-extra-fields==0.9
 djangorestframework-yaml==1.0.3
 
 
@@ -26,26 +25,12 @@ django-choices==1.4.4
 # Gunicorn serves wsgi
 gunicorn==19.7.1
 
-# Celery Worker for Background
-celery[redis]==4.0.2
-
 # Redis for cache / broker
 django-redis-cache==1.7.1
 redis==2.10.5
 
 # Sentry
 raven==6.1.0
-
-# Slack
-pyslack-real==0.6.0
-
-# Django chennels for web-socket
-channels==1.1.5
-asgi-redis==1.4.1
-
-# Maps Plugin for Google Maps widget
-django-map-widgets==0.1.9
-
 # -- DEV --
 # IPython for easier debugging
 ipython==6.1.0
