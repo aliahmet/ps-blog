@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'zrr1w5y1qor8bq1mwb(!@221gnd!=^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', "true") == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["blog.aliahmetbingul.com", "127.0.0.1", "localhost"]
 
 # Application definition
 
@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    'blog.middleware.AccessControlAllowMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -118,14 +118,6 @@ SWAGGER_SETTINGS = {
     },
     'USE_SESSION_AUTH': False,
     'SHOW_REQUEST_HEADERS': True,
-    'SUPPORTED_SUBMIT_METHODS': [
-        'get',
-        'post',
-        'put',
-        'delete',
-        'patch',
-        'options'
-    ],
 }
 
 REST_FRAMEWORK = {
@@ -138,6 +130,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
+    'EXCEPTION_HANDLER': 'blog.handlers.exception_handler'
 }
 
 

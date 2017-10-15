@@ -1,16 +1,16 @@
-from django.conf.urls import url, include
-from rest_framework.authtoken.views import ObtainAuthToken
+from django.conf.urls import url
 
-from blog.views.auth_views import AuthTokenAPIView
+from blog.views.auth_views import RegisterAPIView, LoginAPIView
 from blog.views.comment_views import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
 from blog.views.post_views import PostListCreateAPIView, PostRetrieveUpdateDestroyAPIView
 from blog.views.post_views import PostUnlikeAPIView, PostLikeAPIView
 from blog.views.swagger import SwaggerSchemaView
 
 urlpatterns = [
-    url(r'^api-explorer/', SwaggerSchemaView.as_view(), name="api-explorer"),
+    url(r'^schema/', SwaggerSchemaView.as_view(), name="api-explorer"),
 
-    url(r'^api/v1.0/login/', AuthTokenAPIView.as_view()),
+    url(r'^api/v1.0/auth/login/', LoginAPIView.as_view()),
+    url(r'^api/v1.0/auth/register/', RegisterAPIView.as_view()),
 
     url(r'^api/v1.0/post/', PostListCreateAPIView.as_view(), name="post-list-create-api"),
     url(r'^api/v1.0/post/(?P<pk>[0-9]+)/', PostRetrieveUpdateDestroyAPIView.as_view(),

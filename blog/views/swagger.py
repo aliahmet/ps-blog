@@ -7,6 +7,11 @@ from rest_framework.views import APIView
 from rest_framework_swagger import renderers
 
 
+class AllLinksSchemaGenerator(SchemaGenerator):
+    def has_view_permissions(self, path, method, view):
+        return True
+
+
 class SwaggerSchemaView(APIView):
     # Let it be accessible by anyone
     _ignore_model_permissions = True
@@ -15,17 +20,13 @@ class SwaggerSchemaView(APIView):
     # Don't show yourself
     exclude_from_schema = True
 
-    # It should serve ui and openapi
     renderer_classes = [
-        CoreJSONRenderer,
         renderers.OpenAPIRenderer,
-        renderers.SwaggerUIRenderer
     ]
 
     def get(self, request):
-        generator = SchemaGenerator(
+        generator = AllLinksSchemaGenerator(
             title="PS Blog",
-            description="Some endpoints require authetnication. Please authenticate in order to see all endpoints",
         )
         schema = generator.get_schema(request=request)
         return Response(schema)

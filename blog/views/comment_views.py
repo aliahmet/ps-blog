@@ -15,7 +15,6 @@ class CommentListCreateAPIView(ListCreateAPIView):
 
     serializer_class = CommentSerializer
 
-
     def get(self, request, post_pk):
         """
         List comments of a post
@@ -48,3 +47,28 @@ class CommentRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     # We can use multiple permissions
     permission_classes = IsAuthenticatedOrReadOnly, CommentPermission,
     serializer_class = CommentSerializer
+
+    def get(self, request, pk):
+        """
+        Retrieve comment with given id
+        """
+        return self.retrieve(request, pk)
+
+    def put(self, request, pk):
+        """
+        Update comment with given id
+        """
+        return self.update(request, pk)
+
+    def patch(self, request, pk):
+        """
+        Partially Update comment with given id
+        """
+        return self.partial_update(request, pk)
+
+    def delete(self, request, pk):
+        """
+        Delete the comment with given id
+        """
+        return self.destroy(request, pk)
+
