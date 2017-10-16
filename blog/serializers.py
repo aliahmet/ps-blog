@@ -14,7 +14,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         password = attrs.get("password")
         if password:
-            attrs.set("password", make_password(password))
+            attrs.set("", make_password(password))
         return attrs
 
 

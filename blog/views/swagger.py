@@ -8,6 +8,9 @@ from rest_framework_swagger import renderers
 
 
 class AllLinksSchemaGenerator(SchemaGenerator):
+    """
+    All endpoints should be publicly visible.
+    """
     def has_view_permissions(self, path, method, view):
         return True
 

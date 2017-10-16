@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,6 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'zrr1w5y1qor8bq1mwb(!@221gnd!=^1l!8tkyo*4*x*u2l2tno')
+
+
+RAVEN_CONFIG = {
+    'dsn': os.environ.get("RAVEN_DSN", ""),
+    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', "true") == "true"
@@ -39,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'suit',
     'django_filters',
+    'raven.contrib.django.raven_compat',
 
     # Contrib Apps
     'django.contrib.admin',
@@ -132,6 +140,48 @@ REST_FRAMEWORK = {
     ),
     'EXCEPTION_HANDLER': 'blog.handlers.exception_handler'
 }
+
+
+
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(message)s',
+            'datefmt': '%y %b %d, %H:%M:%S',
+        },
+    },
+
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', "sentry"],
+            'level': 'DEBUG',
+        },
+    }
+}
+
 
 
 # Internationalization
