@@ -11,6 +11,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = "username", "first_name", "last_name", "email", "password"
 
+
     def validate(self, attrs):
         password = attrs.get("password")
         if password:
@@ -21,7 +22,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = "username", "first_name", "last_name"
+        fields = "id", "username", "first_name", "last_name", "email"
+        read_only_fields = "id", "email"
 
 
 class CommentSerializer(serializers.ModelSerializer):

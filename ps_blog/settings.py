@@ -116,17 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'api_key': {
-            'type': 'apiKey',
-            'in': 'header',
-            'name': 'Authorization'
-        }
-    },
-    'USE_SESSION_AUTH': False,
-    'SHOW_REQUEST_HEADERS': True,
-}
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
@@ -134,6 +123,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'blog.authentication.CsrfExemptSessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',

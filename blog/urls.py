@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from blog.views.auth_views import RegisterAPIView, LoginAPIView
+from blog.views.auth_views import RegisterAPIView, LoginAPIView, UserSelfRetrieveUpdateAPIView, UserRetrieveAPIView
 from blog.views.comment_views import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
 from blog.views.post_views import PostListCreateAPIView, PostRetrieveUpdateDestroyAPIView
 from blog.views.post_views import PostUnlikeAPIView, PostLikeAPIView
@@ -11,6 +11,8 @@ urlpatterns = [
 
     url(r'^api/v1.0/auth/login/', LoginAPIView.as_view()),
     url(r'^api/v1.0/auth/register/', RegisterAPIView.as_view()),
+    url(r'^api/v1.0/auth/user/me/', UserSelfRetrieveUpdateAPIView.as_view()),
+    url(r'^api/v1.0/auth/user/(?P<pk>[0-9]+)/', UserRetrieveAPIView.as_view()),
 
     url(r'^api/v1.0/post/', PostListCreateAPIView.as_view(), name="post-list-create-api"),
     url(r'^api/v1.0/post/(?P<pk>[0-9]+)/', PostRetrieveUpdateDestroyAPIView.as_view(),
