@@ -10,6 +10,7 @@ def exception_handler(exc, context):
     response = base_exception_handler(exc, context)
 
     if not response:
+        logger.error(exc)
         response = Response({
             "details": exc.args if settings.DEBUG else "not sure",
             "message": "Houston, we have a problem!"
