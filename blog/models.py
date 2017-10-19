@@ -1,18 +1,24 @@
-from celery.utils.text import truncate
 from django.conf import settings
 from django.db import models
 from django.db.models import signals
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
-
+from celery.utils.text import truncate
 from blog import managers
-
-# Models
 from blog.managers import PostManager
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
+    objects = PostManager()
+
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="written_post_set")
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, null=True, blank=True)
@@ -23,16 +29,14 @@ class Post(models.Model):
     liked_by = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="liked_post_set")
     created_at = models.DateTimeField("Created Date", default=timezone.now)
     updated_at = models.DateTimeField("Update Date", default=timezone.now)
-    tags = models.CharField(max_length=1000, null=True, blank=True)
-
-    objects = PostManager()
+    tags = models.ManyToManyField("Tag", blank=True)
 
     def __str__(self):
         return truncate(self.title, maxlen=30)
 
 
 class PublishedPost(Post):
-    objects = managers.PublishedPostManager
+    objects = managers.PublishedPostManager()
 
     class Meta:
         proxy = True
@@ -45,7 +49,7 @@ class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     body = models.TextField()
     post = models.ForeignKey("Post", on_delete=models.CASCADE)
-    parent = models.ForeignKey("Comment", on_delete=models.CASCADE, related_name="kids")
+    parent = models.ForeignKey("Comment", on_delete=models.CASCADE, related_name="kids", blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
