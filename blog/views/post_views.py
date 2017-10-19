@@ -11,7 +11,7 @@ from blog.metadata import BlogMetadata
 from blog.models import Post
 from blog.pagination import PostCursorPagination
 from blog.permissions import IsOwnerOrReadOnly
-from blog.serializers import PostSerializer, PostDetailsSerializer
+from blog.serializers import PostPreviewSerializer, PostDetailsSerializer
 
 
 class PostListCreateAPIView(ListCreateAPIView):
@@ -31,7 +31,7 @@ class PostListCreateAPIView(ListCreateAPIView):
     search_fields = "body",
     filter_fields = "author",
 
-    serializer_class = PostSerializer
+    serializer_class = PostPreviewSerializer
     metadata_class = BlogMetadata
 
     sample_response = {
@@ -114,7 +114,6 @@ class PostLikeUnlikeBaseAPIView(APIView):
     """
     permission_classes = IsAuthenticated,
 
-    serializer_class = PostSerializer
 
     def get_object(self):
         pk = self.kwargs.get("pk")

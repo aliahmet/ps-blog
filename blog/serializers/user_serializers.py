@@ -3,19 +3,16 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from blog.models import Comment, Post
-
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = "username", "first_name", "last_name", "email", "password"
 
-
     def validate(self, attrs):
         password = attrs.get("password")
         if password:
-            attrs["password"]  = make_password(password)
+            attrs["password"] = make_password(password)
         return attrs
 
 
@@ -24,31 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = "id", "username", "first_name", "last_name", "email"
         read_only_fields = "id", "email"
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        read_only_fields = "user", "created_at", "post"
-        fields = "__all__"
-
-    user = UserSerializer()
-
-
-class PostDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        read_only_fields = "author", "liked_by", "created_at", "updated_at",
-        fields = "__all__"
-
-    comment_set = CommentSerializer(many=True)
-
-
-class PostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        read_only_fields = "author", "created_at", "updated_at",
-        fields = "author", "created_at", "updated_at", "slug", "preview", "thumbnail", "tags"
 
 
 class UserTokenSerializer(serializers.Serializer):

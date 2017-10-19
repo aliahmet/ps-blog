@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from blog.permissions import IsOwnerOrReadOnly
+from blog.permissions import IsOwnerOrReadOnly, IsSelfOrReadOnly
 from blog.serializers import UserTokenSerializer, UserRegisterSerializer, UserSerializer
 
 
@@ -51,38 +51,28 @@ class RegisterAPIView(CreateAPIView):
         self.user = serializer.save()
 
 
-class UserSelfRetrieveUpdateAPIView(RetrieveUpdateAPIView):
+class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
-    permission_classes = IsAuthenticated,
+    permission_classes = IsSelfOrReadOnly,
+    lookup_url_kwarg = "pk"
 
     def get_object(self):
         return self.request.user
 
-    def get(self, request):
+    def get(self, request, pk):
         """
         Retrieve current users details
         """
-        return self.retrieve(request)
+        return self.retrieve(request, pk)
 
-    def put(self, request):
+    def put(self, request, pk):
         """
         Update current users details
         """
-        return self.update(request)
+        return self.update(request, pk)
 
-    def patch(self, request):
+    def patch(self, request, pk):
         """
         Update current users details partially
         """
-        return self.partial_update(request)
-
-
-class UserRetrieveAPIView(RetrieveAPIView):
-    serializer_class = UserSerializer
-    permission_classes = IsOwnerOrReadOnly("self")
-
-    def get(self, request, pk):
-        """
-        Retrieve user details
-        """
-        return self.retrieve(request, pk)
+        return self.partial_update(request, pk)
