@@ -20,6 +20,16 @@ def IsOwnerOrReadOnly(owner_field):
     return _IsOwnerOrReadOnly
 
 
+class IsSelfOrReadOnly(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return (
+            request.method in SAFE_METHODS or
+            request.user and
+            is_authenticated(request.user) and
+            obj == request.user
+        )
+
+
 class CommentPermission(BasePermission):
     """
     A comment can be deleted or changed by its user
