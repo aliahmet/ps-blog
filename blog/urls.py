@@ -4,9 +4,9 @@ from blog import views
 urlpatterns = [
     url(r'^schema/$', views.SwaggerSchemaView.as_view(), name="api-explorer"),
 
-    url(r'^api/v1.0/auth/login/$', views.LoginAPIView.as_view()),
-    url(r'^api/v1.0/auth/register/$', views.RegisterAPIView.as_view()),
-    url(r'^api/v1.0/auth/user/(?P<pk>[0-9]+)/$', views.UserRetrieveUpdateAPIView.as_view()),
+    url(r'^api/v1.0/auth/login/$', views.LoginAPIView.as_view(), name="login-api"),
+    url(r'^api/v1.0/auth/register/$', views.RegisterAPIView.as_view(), name="register-api"),
+    url(r'^api/v1.0/auth/user/(?P<pk>[0-9]+)/$', views.UserRetrieveUpdateAPIView.as_view(), name="user-retrieve-update-api"),
 
     url(r'^api/v1.0/post/$', views.PostListCreateAPIView.as_view(), name="post-list-create-api"),
     url(r'^api/v1.0/post/(?P<pk>[0-9]+)/$', views.PostRetrieveUpdateDestroyAPIView.as_view(),

@@ -1,12 +1,9 @@
-from rest_framework import parsers, renderers
 from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from blog.permissions import IsOwnerOrReadOnly, IsSelfOrReadOnly
+from blog.permissions import IsSelfOrReadOnly
 from blog.serializers import UserTokenSerializer, UserRegisterSerializer, UserSerializer
 
 
@@ -45,7 +42,7 @@ class RegisterAPIView(CreateAPIView):
         """
         self.create(request, *args, **kwargs)
         token, created = Token.objects.get_or_create(user=self.user)
-        return Response({'token': token.key})
+        return Response({'token': token.key}, status=201)
 
     def perform_create(self, serializer):
         self.user = serializer.save()
