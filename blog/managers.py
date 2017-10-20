@@ -1,5 +1,4 @@
-from django.db import models
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Count, F
 from django.db.models.manager import BaseManager
 
 
@@ -9,7 +8,12 @@ class PostQuerySet(QuerySet):
 
 
 class PostManager(BaseManager.from_queryset(PostQuerySet)):
-    pass
+    def get_queryset(self):
+        return super().get_queryset().annotate(
+            comment_count=Count("comment", distinct=True),
+            like_count=Count("liked_by", distinct=True),
+            points=F("comment_count") + F("like_count")
+        )
 
 
 class PublishedPostManager(PostManager):

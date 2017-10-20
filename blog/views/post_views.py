@@ -7,7 +7,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from blog.metadata import BlogMetadata
 from blog.models import Post
 from blog.pagination import PostCursorPagination
 from blog.permissions import IsOwnerOrReadOnly
@@ -32,7 +31,6 @@ class PostListCreateAPIView(ListCreateAPIView):
     filter_fields = "author",
 
     serializer_class = PostPreviewSerializer
-    metadata_class = BlogMetadata
 
     sample_response = {
         "message": "ok"
@@ -113,7 +111,6 @@ class PostLikeUnlikeBaseAPIView(APIView):
     Base class to handle like/unlike
     """
     permission_classes = IsAuthenticated,
-
 
     def get_object(self):
         pk = self.kwargs.get("pk")

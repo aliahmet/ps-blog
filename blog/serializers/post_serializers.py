@@ -16,8 +16,11 @@ class PostDetailsSerializer(serializers.ModelSerializer):
 class PostPreviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        read_only_fields = "author", "created_at", "updated_at",
-        fields = "author", "created_at", "updated_at", "slug", "preview", "thumbnail", "tags"
+        read_only_fields = "author", "created_at", "updated_at", "like_count", "comment_count"
+        fields = "author", "like_count", "comment_count", "created_at", "updated_at", "slug", "preview", "thumbnail", "tags"
+
+    like_count = serializers.IntegerField()
+    comment_count = serializers.IntegerField()
 
     tags = TagSerializer(many=True)
     author = UserSerializer()
